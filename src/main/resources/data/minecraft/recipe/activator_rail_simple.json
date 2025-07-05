@@ -1,0 +1,16 @@
+﻿{
+  "type": "minecraft:crafting_shaped",
+  "group": "activator_rail",
+  "category": "redstone",
+  "pattern": [
+    "RT"
+  ],
+  "key": {
+    "R": "minecraft:rail",
+    "T": "minecraft:redstone_torch"
+  },
+  "result": {
+    "id": "minecraft:activator_rail",
+    "count": 1
+  }
+}

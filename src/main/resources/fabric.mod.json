@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "solute_extras",
+  "version": "${version}",
+  "name": "Solute Extras",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/solute/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "fabric-datagen": [
+      "nl.gjorgdy.solute_extras.client.SoluteExtrasDataGenerator"
+    ],
+    "main": [
+      "nl.gjorgdy.solute_extras.SoluteExtras"
+    ]
+  },
+  "mixins": [
+    "solute_extras.mixins.json",
+    {
+      "config": "solute_extras.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

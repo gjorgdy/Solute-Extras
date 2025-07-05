@@ -1,0 +1,21 @@
+{
+  "anvil_cost": 8,
+  "description": {
+    "translate": "Excavation"
+  },
+  "exclusive_set": "solute:drilling",
+  "effects": {},
+  "max_level": 1,
+  "min_cost": {
+    "base": 30,
+    "per_level_above_first": 12
+  },
+  "max_cost": {
+    "base": 30,
+    "per_level_above_first": 12
+  },
+  "slots": ["mainhand"],
+  "supported_items": "#minecraft:excavation_tools",
+  "primary_items": "#minecraft:excavation_tools",
+  "weight": 2
+}

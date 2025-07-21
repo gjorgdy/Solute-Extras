@@ -3,7 +3,9 @@
   "group": "activator_rail",
   "category": "redstone",
   "pattern": [
-    "RT"
+    "RRR",
+    "RTR",
+    "RRR"
   ],
   "key": {
     "R": "minecraft:rail",
@@ -11,6 +13,6 @@
   },
   "result": {
     "id": "minecraft:activator_rail",
-    "count": 1
+    "count": 8
   }
 }

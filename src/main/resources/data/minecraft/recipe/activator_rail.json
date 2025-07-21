@@ -3,9 +3,9 @@
   "group": "activator_rail",
   "category": "redstone",
   "pattern": [
-    "ISI",
     "IRI",
-    "ISI"
+    "ISI",
+    "IRI"
   ],
   "key": {
     "I": "minecraft:iron_ingot",

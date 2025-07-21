@@ -3,9 +3,9 @@
   "group": "detector_rail",
   "category": "redstone",
   "pattern": [
-    "ISI",
     "IPI",
-    "ISI"
+    "ISI",
+    "IPI"
   ],
   "key": {
     "I": "minecraft:iron_ingot",

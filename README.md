@@ -12,6 +12,8 @@ Added smelting and blasting of raw metal blocks.
 Made powered rail crafted with gold give 16 rails.
 Made powered rail crafted with copper give 8 rails.
 
+Added recipes to change rails into detector and activator rails.
+
 --------
 
 ### Enchantment

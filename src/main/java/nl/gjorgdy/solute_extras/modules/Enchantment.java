@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static nl.gjorgdy.solute_extras.utils.BlockUtils.breakBlockReturnDrop;
 
@@ -136,17 +137,29 @@ public class Enchantment {
 
         if (!blockState.isIn(BlockTags.LOGS) && !blockState.isOf(Blocks.MANGROVE_ROOTS)) return;
 
+        Predicate<BlockPos> belongsToTree;
         Block log = blockState.getBlock();
+        if (log == Blocks.MANGROVE_ROOTS || log == Blocks.MANGROVE_LOG) {
+            belongsToTree = (_pos) -> {
+                BlockState _blockState = world.getBlockState(_pos);
+                return _blockState.isOf(Blocks.MANGROVE_ROOTS) || _blockState.isOf(Blocks.MANGROVE_LOG);
+            };
+        } else {
+            belongsToTree = (_pos) -> {
+                BlockState _blockState = world.getBlockState(_pos);
+                return _blockState.isOf(log);
+            };
+        }
 
         AtomicInteger logs = new AtomicInteger();
         ForAxis(true, false, true, pos, (_pos) -> {
-            if (world.getBlockState(_pos).isOf(log)) {
+            if (belongsToTree.test(_pos)) {
                 logs.getAndIncrement();
             }
         });
         if (logs.get() > 1) return;
 
-        List<BlockPos> positions = findLogs(new ArrayList<>(), world, pos, log, 48);
+        List<BlockPos> positions = findLogs(new ArrayList<>(), pos, belongsToTree, 48);
 
         List<Drops> dropsInstances = positions.stream()
             .map(bp -> breakBlockReturnDrop((ServerWorld) world, bp, player, tool))
@@ -155,13 +168,13 @@ public class Enchantment {
         DropDrops(world, player, pos, dropsInstances);
     }
 
-    private static List<BlockPos> findLogs(List<BlockPos> positions, World world, BlockPos pos, Block log, int depth) {
+    private static List<BlockPos> findLogs(List<BlockPos> positions, BlockPos pos, Predicate<BlockPos> belongsToTree, int depth) {
         if (depth <= 0) return positions;
         positions.add(pos);
         Consumer<BlockPos> consumer = (_pos) -> {
             if (positions.contains(_pos)) return;
-            if (world.getBlockState(_pos).isOf(log)) {
-                findLogs(positions, world, _pos, log, depth - 1);
+            if (belongsToTree.test(_pos)) {
+                findLogs(positions, _pos, belongsToTree, depth - 1);
             }
         };
         ForAxis(-1, 1, 0, 1, -1, 1, pos, consumer);

@@ -148,10 +148,6 @@ public class Enchantment {
 
         List<BlockPos> positions = findLogs(new ArrayList<>(), world, pos, log, 48);
 
-        boolean hasLeaves = positions.stream()
-            .anyMatch((_pos) -> world.getBlockState(_pos.up()).isIn(BlockTags.LEAVES));
-        if (!hasLeaves) return;
-
         List<Drops> dropsInstances = positions.stream()
             .map(bp -> breakBlockReturnDrop((ServerWorld) world, bp, player, tool))
             .toList();

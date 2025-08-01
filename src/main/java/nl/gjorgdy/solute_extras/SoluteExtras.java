@@ -22,6 +22,9 @@ public class SoluteExtras implements ModInitializer {
         PlayerBlockBreakEvents.BEFORE.register(new PlayerBlockBreakListener());
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            // Lumber
+            var lumber = EnchantmentUtils.getEnchantmentFromString(server, "solute:lumber");
+            lumber.ifPresent(enchantmentReference -> ENCHANTMENTS.LUMBER = enchantmentReference);
             // Excavation
             var excavation = EnchantmentUtils.getEnchantmentFromString(server, "solute:excavation");
             excavation.ifPresent(enchantmentReference -> ENCHANTMENTS.EXCAVATION = enchantmentReference);
@@ -35,6 +38,7 @@ public class SoluteExtras implements ModInitializer {
     }
 
     public static class ENCHANTMENTS {
+        public static RegistryEntry.Reference<Enchantment> LUMBER;
         public static RegistryEntry.Reference<Enchantment> EXCAVATION;
         public static RegistryEntry.Reference<Enchantment> DRILLING;
         public static RegistryEntry.Reference<Enchantment> CRUSHING;

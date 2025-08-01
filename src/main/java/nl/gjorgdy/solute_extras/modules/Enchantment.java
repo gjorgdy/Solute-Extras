@@ -7,6 +7,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -23,6 +24,7 @@ import nl.gjorgdy.solute_extras.utils.ToolHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static nl.gjorgdy.solute_extras.utils.BlockUtils.breakBlockReturnDrop;
@@ -127,6 +129,49 @@ public class Enchantment {
         DropDrops(world, player, pos, dropsInstances);
     }
 
+    public static void lumber(World world, PlayerEntity player, BlockPos pos, BlockState blockState) {
+        var tool = player.getMainHandStack();
+        var toolHandler = new ToolHandler(tool);
+        if (!toolHandler.test(blockState)) return;
+
+        if (!blockState.isIn(BlockTags.LOGS) && !blockState.isOf(Blocks.MANGROVE_ROOTS)) return;
+
+        Block log = blockState.getBlock();
+
+        AtomicInteger logs = new AtomicInteger();
+        ForAxis(true, false, true, pos, (_pos) -> {
+            if (world.getBlockState(_pos).isOf(log)) {
+                logs.getAndIncrement();
+            }
+        });
+        if (logs.get() > 1) return;
+
+        List<BlockPos> positions = findLogs(new ArrayList<>(), world, pos, log, 48);
+
+        boolean hasLeaves = positions.stream()
+            .anyMatch((_pos) -> world.getBlockState(_pos.up()).isIn(BlockTags.LEAVES));
+        if (!hasLeaves) return;
+
+        List<Drops> dropsInstances = positions.stream()
+            .map(bp -> breakBlockReturnDrop((ServerWorld) world, bp, player, tool))
+            .toList();
+
+        DropDrops(world, player, pos, dropsInstances);
+    }
+
+    private static List<BlockPos> findLogs(List<BlockPos> positions, World world, BlockPos pos, Block log, int depth) {
+        if (depth <= 0) return positions;
+        positions.add(pos);
+        Consumer<BlockPos> consumer = (_pos) -> {
+            if (positions.contains(_pos)) return;
+            if (world.getBlockState(_pos).isOf(log)) {
+                findLogs(positions, world, _pos, log, depth - 1);
+            }
+        };
+        ForAxis(-1, 1, 0, 1, -1, 1, pos, consumer);
+        return positions;
+    }
+
     public static void excavate(World world, PlayerEntity player, BlockPos pos, BlockState blockState) {
         var tool = player.getMainHandStack();
         var toolHandler = new ToolHandler(tool);
@@ -185,9 +230,13 @@ public class Enchantment {
     }
 
     private static void ForAxis(boolean xAxis, boolean yAxis, boolean zAxis, BlockPos center, Consumer<BlockPos> consumer) {
-        for (int x = xAxis ? -1 : 0; x <= (xAxis ? 1 : 0); x++) {
-            for (int y = yAxis ? -1 : 0; y <= (yAxis ? 1 : 0); y++) {
-                for (int z = zAxis ? -1 : 0; z <= (zAxis ? 1 : 0); z++) {
+        ForAxis((xAxis ? -1 : 0), (xAxis ? 1 : 0), (yAxis ? -1 : 0), (yAxis ? 1 : 0), (zAxis ? -1 : 0), (zAxis ? 1 : 0), center, consumer);
+    }
+
+    private static void ForAxis(int xA, int xB, int yA, int yB, int zA, int zB, BlockPos center, Consumer<BlockPos> consumer) {
+        for (int x = xA; x <= xB; x++) {
+            for (int z = zA; z <= zB; z++) {
+                for (int y = yA; y <= yB; y++) {
                     consumer.accept(center.add(x, y, z));
                 }
             }

@@ -18,6 +18,9 @@ public class PlayerBlockBreakListener implements PlayerBlockBreakEvents.Before {
     public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
         // Enchantments
         ItemStack playerTool = player.getMainHandStack();
+        // Lumber
+        int lumber = EnchantmentHelper.getLevel(SoluteExtras.ENCHANTMENTS.LUMBER, playerTool);
+        if (lumber > 0 && !player.isSneaking()) Enchantment.lumber(world, player, pos, state);
         // Excavation
         int excavation = EnchantmentHelper.getLevel(SoluteExtras.ENCHANTMENTS.EXCAVATION, playerTool);
         if (excavation > 0 && !player.isSneaking()) Enchantment.excavate(world, player, pos, state);

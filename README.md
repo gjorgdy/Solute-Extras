@@ -30,13 +30,21 @@ Crusher [*pickaxe*]
 Drilling [*pickaxe, shovel*]
 - Increases depth per level, up to level 3
 - Mine deeper when mining compatible blocks with similar hardness
-- Can be gotten in an enchanting table from level 30
+- Can be gotten in an enchanting table from level 8, with +8 per level
 - Can not be combined with Excavation
+- Can be canceled by sneaking
 
 Excavation [*pickaxe, shovel*]
 - Mine a 3x3 area when mining compatible blocks with similar hardness
 - Can be gotten in an enchanting table from level 30
 - Can not be combined with Drilling
+- Can be canceled by sneaking
+
+Lumber [*axe*]
+- Chop down a whole tree by mining the bottom block
+- Can be gotten in an enchanting table from level 15
+- The bottom must be a single block. For a 2x2 tree, first mine the 3 other blocks
+- Can be canceled by sneaking
 
 --------
 

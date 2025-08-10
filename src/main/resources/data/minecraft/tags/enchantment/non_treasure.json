@@ -3,6 +3,7 @@
   "values": [
     "solute:excavation",
     "solute:drilling",
-    "solute:crushing"
+    "solute:crushing",
+    "solute:lumber"
   ]
 }

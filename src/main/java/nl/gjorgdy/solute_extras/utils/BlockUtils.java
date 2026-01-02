@@ -10,13 +10,13 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameRules;
+import net.minecraft.world.rule.GameRules;
 import nl.gjorgdy.solute_extras.models.Drops;
 
 public class BlockUtils {
 
     public static void dropExperience(ServerWorld world, BlockPos pos, int size) {
-        if (world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS)) {
+        if (world.getGameRules().getValue(GameRules.DO_TILE_DROPS)) {
             ExperienceOrbEntity.spawn(world, Vec3d.ofCenter(pos), size);
         }
     }
